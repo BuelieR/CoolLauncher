@@ -1,0 +1,10 @@
+{
+    "version_json_url": "http://launchermeta.mojang.com/mc/game/version_manifest.json",
+    "geometry": "640x480",
+    "font": "XiangLiFangHeiTi",
+    "lang": "zh_cn",
+    "user": {
+        "name": "",
+        "login_way": "offline"
+    }
+}
