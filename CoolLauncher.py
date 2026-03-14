@@ -3,25 +3,74 @@ import tkinter.ttk as ttk
 import tkinter.messagebox
 import runtime_libs.DataGet as DataGet
 
+class languageGet:
+    """
+    Notes:
+    Constant LangSettings:
+        We can get the language setting of the user by this constant.
+
+    The function of class languageGet is
+    to get the language settings.
+    
+    It will return the language settings 
+    in a dictionary.
+
+    And it will according to the language settings 
+    to set the text of the UI.
+
+    It is necessary although it is seem to too complex.
+    
+    If you are interested in helping us 
+    to improve this module or move the module to runtime_libs/,
+    we welcome your PR.
+    """
+    LangSettings = DataGet.DataGet("lang").get_launcher_data()["out"]
+    mainWindwos = {
+        "title": DataGet.DataGet(
+            "mainWindows.title",
+        ).get_launcher_data(
+            f"runtime_res/lang/{LangSettings}.json")["out"],
+
+        "startGame": DataGet.DataGet(
+            "mainWindows.start_btn",
+        ).get_launcher_data(
+            f"runtime_res/lang/{LangSettings}.json")["out"],
+    }
+    userInformation = {
+        "name": DataGet.DataGet(
+            "user"
+        ).get_launcher_data()["out"]["name"]
+    }
+
 class mainWindows:
     def __init__(self) -> None:
-        self.lang = DataGet.DataGet("lang").get_launcher_data()["url"]
+        # Register the main window/task.
+        self.lang = DataGet.DataGet("lang").get_launcher_data()["out"]
         self.mainWindows = tk.Tk()
-        self.mainWindows.title(
-            DataGet.DataGet(
-                "mainWindows.title"
-            ).get_launcher_data(
-                f"runtime_res/lang/{self.lang}.json"
-            )["url"]
-        )
+        self.mainWindows.title(languageGet.mainWindwos["title"])
 
-        # 注册自定义字体
+        # Register the custom font.
+        # It's only for Chinese,
+        # because I'm a Chinese.
+        # You can give more fonts to this project.
         try:
             import os
             from tkinter import font
-            font_path = os.path.join(os.path.dirname(__file__), "runtime_res", "font", "XiangLiFangHeiTi.ttf")
+
+            font_path = os.path.join(
+                os.path.dirname(__file__), 
+                "runtime_res", 
+                "font", 
+                "XiangLiFangHeiTi.ttf"
+            
+            )
+
             if os.path.exists(font_path):
-                font.Font(family="XiangLiFangHeiTi", file=font_path, size=12, weight="bold")
+                font.Font(
+                    family="XiangLiFangHeiTi", 
+                    file=font_path, size=12, 
+                    weight="bold"
+                )
         except Exception as e:
             pass
 
@@ -42,9 +91,6 @@ class mainWindows:
         #设置窗口居中显示
         self.mainWindows.geometry(size)
 
-    def ttk_style(self):
-        pass
-
     def left_menu(self):
         #左侧边栏
         left_menu = tk.Frame(
@@ -56,7 +102,7 @@ class mainWindows:
         user_info = tk.Label(
             left_menu, 
             text="用户：" + 
-            DataGet.DataGet("user").get_launcher_data()["url"]["name"], 
+            languageGet.userInformation["name"], 
             bg="#f0f0f0")
         user_info.pack(pady=20)
 
@@ -74,11 +120,7 @@ class mainWindows:
         
         start_btn = tk.ttk.Button(
             self.mainWindows,
-            text=f"{DataGet.DataGet(
-                "mainWindows.start_btn"
-            ).get_launcher_data(
-                f"runtime_res/lang/{self.lang}.json"
-            )["url"]}",
+            text=languageGet.mainWindwos["startGame"],
             style="Custom.TButton",
         )
         
